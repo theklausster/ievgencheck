@@ -1,48 +1,32 @@
 package Acts;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
-public class Backward implements Behavior{
+public class Backward implements IMovement{
 	
 	
-	private boolean isSuppresed;
-	private DifferentialPilot pilot;
-	private boolean inControl = false;
-	
-	public Backward(DifferentialPilot pilot) {
+	DifferentialPilot pilot;
+	DataOutputStream dos;
+	public Backward(DifferentialPilot pilot, DataOutputStream dos) {
 		this.pilot = pilot;
-
-	}
-
-	public void iWantToControl(){
-		System.out.print("in backward");
-		inControl = true;
-	}
-	
-	
-	@Override
-	public boolean takeControl() {
-		return inControl;
+		this.dos = dos;
 	}
 
 	@Override
-	public void action() {
-		isSuppresed = false;
-		pilot.backward();
-		while(!isSuppresed)
-			Thread.yield();
+	public void move() {
+		//pilot.backward();
+		System.out.println("MOVEVING BACKWARD");
 	}
 
 	@Override
-	public void suppress() {
-		 inControl = false;
-		 isSuppresed = true;
-		
+	public void giveResponse() throws IOException {
+		dos.writeUTF("backward x y");
+		dos.flush();
 	}
-
 	
 }

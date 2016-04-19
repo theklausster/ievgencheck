@@ -1,6 +1,6 @@
 package gui;
 
-import NXTConnector;
+import lejos.pc.comm.NXTConnector;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -15,6 +15,7 @@ public class Panel extends javax.swing.JPanel implements KeyListener{
 
     DataInputStream dis;
     DataOutputStream dos;
+    NXTConnector conn = new NXTConnector();
     /**
      * Creates new form Panel
      */
@@ -68,7 +69,7 @@ public class Panel extends javax.swing.JPanel implements KeyListener{
             }
         });
 
-        txtRobot.setText("omega");
+        txtRobot.setText("Omega");
 
         txtAreaInfo.setColumns(20);
         txtAreaInfo.setRows(5);
@@ -122,25 +123,23 @@ public class Panel extends javax.swing.JPanel implements KeyListener{
     }// </editor-fold>                        
 
     private void buttonConnectClicked(java.awt.event.ActionEvent evt) {
-    	try{
-    		System.out.println("Connecting to NXT...");
-    		String robotName = txtRobot.getText();
-    		txtAreaInfo.append("Try connecting to " + robotName);
-    		 NXTConnector conn = new NXTConnector();
-    		 boolean connected = conn.connectTo("btspp://"+robotName);
-    		 if (! connected)
-    		    {
-    			 txtAreaInfo.append("ERROR - Unable to connect to NXT");
-    			System.exit(2);
-    		    }
-    		 DataInputStream dis = new DataInputStream(conn.getInputStream());
-    		 DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-    		 
-    	}   
-    	catch(IOException e){
-    		txtAreaInfo.append(e.getMessage());
-    		
-    	}
+    	System.out.println("Connecting to NXT...");
+		String robotName = txtRobot.getText();
+		txtAreaInfo.append("Connecting to " + robotName);
+		 
+		 System.out.println("NXT con oprettet");
+		 boolean connected = conn.connectTo("btspp://Omega");
+		 System.out.println(connected);
+		 if (! connected)
+		    {
+			 txtAreaInfo.append("ERROR - Unable to connect to NXT");
+			System.exit(2);
+		    }
+		 else{
+			 txtAreaInfo.append("Connection created");
+		 }
+		// DataInputStream dis = new DataInputStream(conn.getInputStream());
+		// DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
     }                                        
 
 
@@ -156,8 +155,14 @@ public class Panel extends javax.swing.JPanel implements KeyListener{
     // End of variables declaration  
     
     private void sendMessage(String msg){
-    	dos.writeUTF(msg);
-		dos.flush();
+    	try {
+			dos.writeUTF(msg);
+			dos.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
     }
 	
     public void keyPressed(KeyEvent e) {

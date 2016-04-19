@@ -1,34 +1,39 @@
 package Acts;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import Connection.Connection;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
-public class Forward implements IMovement  {
+public class Stop implements IMovement{
 
 	DifferentialPilot pilot;
 	DataOutputStream dos;
-	public Forward(DifferentialPilot pilot, DataOutputStream dos) {
+	
+	public Stop(DifferentialPilot pilot, DataOutputStream dos) {
 		this.pilot = pilot;
 		this.dos = dos;
 	}
-
+	
 	@Override
 	public void move() {
-		//pilot.forward();
-		System.out.println("MOVEVING FORWARD");
+	//	pilot.stop();
+		System.out.println("STOPPED");
 	}
 
+	
 	@Override
 	public void giveResponse() throws IOException {
-		dos.writeUTF("forward x y");
+		dos.writeUTF("stop x y");
 		dos.flush();
 	}
 	
+	
+
+
+
+
 
 
 }

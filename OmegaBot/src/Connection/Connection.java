@@ -1,83 +1,45 @@
 package Connection;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Connection implements ISubject {
+import Plan.TheArbitrator;
+import lejos.nxt.LCD;
+import lejos.nxt.comm.BTConnection;
+import lejos.nxt.comm.Bluetooth;
 
-	ArrayList<ISub> listOfSubscribers;
-	private static String lastMessage;
-	public static Connection Instance;
+public class Connection  {
+
 	
-
-	private Connection()
+	private BTConnection btc;
+	
+	public Connection()
 	{
-		System.out.println("Connection() exicuted");
-		try
-		{
-			 listOfSubscribers = new ArrayList<>();
-		  //  LCD.clear();
-		  //  LCD.drawString("Waiting for client connection...", 0, 0);
-		  //  BTConnection btc = Bluetooth.waitForConnection();	    
-		   // LCD.drawString("Client connected", 0, 0);
-		   // DataInputStream dis = new DataInputStream(btc.openDataInputStream());
-		   // DataOutputStream dos = new DataOutputStream(btc.openDataOutputStream());
-			 lastMessage = "back";
-			//LCD.clear();
-			//LCD.drawString(message, 0, 2);
-			
-			//dos.writeUTF(message.toUpperCase());
-			//dos.flush();
-			
-			//if (message.equalsIgnoreCase("quit"))
-			//{
-			//    done = true;
-			//}
-		   // }
-		 //   LCD.clear();
-		 //   LCD.drawString("NXT terminating", 0, 2);
-		} 
-		catch (Exception e)
-		{
-		    // TODO Auto-generated catch block
-		    System.out.println(e.getMessage());
-		}
+		setupConnection();
 	}
-	
-	public static Connection getInstance(){
-		System.out.println("singleton connection getInstance() exicuted");
-		if(Instance == null){
-			Instance = new Connection();
-		}
-		return Instance;
-	}
-	
-	public ArrayList<ISub> getSubscribers(){
-		return listOfSubscribers;
-	}
+		
 
 
-	@Override
-	public void notifySubscriber(String msg) {
-		for(ISub sub : listOfSubscribers){
-			sub.getLastMessage(msg);
-			System.out.println("notifiySubsribers() with the msg: " + msg);
+		private void setupConnection() {
+		
+			    LCD.clear();
+			    LCD.drawString("Waiting for client connection...", 0, 0);
+			    btc = Bluetooth.waitForConnection();	    
+			    LCD.drawString("Client connected", 0, 0);
+
+	}
+		
+		public BTConnection getConnection(){
+				return btc;
+				
 		}
+		    
 		
 	}
+	
 
-	@Override
-	public void addSubscriber(ISub sub) {
-		listOfSubscribers.add(sub);
-		System.out.println("I Sub added to addSubscriber()");
-	}
-
-	@Override
-	public void removeSubscriber(ISub sub) {
-		listOfSubscribers.remove(sub);
-		
-	}
-
-}
 
 
