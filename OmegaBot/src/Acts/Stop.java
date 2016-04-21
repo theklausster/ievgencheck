@@ -18,8 +18,8 @@ public class Stop implements IMovement{
 	
 	@Override
 	public void move() {
-	//	pilot.stop();
-		System.out.println("STOPPED");
+	    pilot.stop();
+	
 	}
 
 	

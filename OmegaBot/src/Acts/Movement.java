@@ -19,6 +19,11 @@ public class Movement implements Behavior{
 	IMovement forward;
 	IMovement back;
 	IMovement stop;
+	IMovement left;
+	IMovement right;
+	IMovement backleft;
+	IMovement backright;
+	Direction direction = Direction.Stop;
 	boolean isSupressed;
 	
 	
@@ -30,6 +35,10 @@ public class Movement implements Behavior{
 		forward = new Forward(pilot, dos);
 		back = new Backward(pilot,dos);
 		stop = new Stop(pilot,dos);
+		left = new Left(pilot,dos);
+		right = new Right(pilot,dos);
+		backright = new BackRight(pilot,dos);
+		backleft = new BackLeft(pilot,dos);
 	}
 	
 
@@ -41,24 +50,39 @@ public class Movement implements Behavior{
 	@Override
 	public void action() {
 		try{
+			
 		while(!isSupressed)
 		{
-			
-		switch (dis.readUTF()) {
+			String input = dis.readUTF();
+		switch (input) {
 			case "forward":
+				direction = Direction.Forward;
 				movement = forward;
+				
 			break;
 			case "backward":
+				direction = Direction.Backward;
 				movement = back;
+				
 			break;
 			case "stop":
+				direction = Direction.Stop;
 				movement = stop;
+			break;
+			case "left":
+				if(direction == Direction.Forward ) {movement = left;}
+				if(direction == Direction.Backward ) { movement = backleft;}
+				break;
+			case "right":
+				if(direction == Direction.Forward ) {movement = right;}
+				if(direction == Direction.Backward) { movement = backright;}
 			break;
 
 		default:
 			break;
 		}
 		
+
 		movement.move();
 		movement.giveResponse();
 		}
@@ -72,6 +96,10 @@ public class Movement implements Behavior{
 	public void suppress() {
 		isSupressed = true;
 		
+	}
+	
+	private enum Direction{
+		Forward,Backward,Stop;
 	}
 	
 	

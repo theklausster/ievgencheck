@@ -19,8 +19,8 @@ public class Backward implements IMovement{
 
 	@Override
 	public void move() {
-		//pilot.backward();
-		System.out.println("MOVEVING BACKWARD");
+		pilot.backward();
+	
 	}
 
 	@Override
