@@ -7,6 +7,7 @@ import java.io.IOException;
 import Connection.ConnectionHelper;
 import Connection.ISub;
 import lejos.nxt.LCD;
+import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
@@ -26,17 +27,18 @@ public class Movement implements Behavior, ISub{
 	boolean isSupressed = false;
 	String input = "stop";
 	boolean newInput;
+
 	
-	 public Movement(DifferentialPilot pilot, ConnectionHelper ch ) {
+	 public Movement(DifferentialPilot pilot, ConnectionHelper ch, OdometryPoseProvider odom) {
 		this.pilot = pilot;
 		ch.addSub(this);
-		forward = new Forward(pilot, ch.getDOS());
-		back = new Backward(pilot, ch.getDOS());
-		stop = new Stop(pilot, ch.getDOS());
-		left = new Left(pilot, ch.getDOS());
-		right = new Right(pilot, ch.getDOS());
-		backright = new BackRight(pilot, ch.getDOS());
-		backleft = new BackLeft(pilot, ch.getDOS());
+		forward = new Forward(pilot, ch.getDOS(), odom);
+		back = new Backward(pilot, ch.getDOS(), odom);
+		stop = new Stop(pilot, ch.getDOS(), odom);
+		left = new Left(pilot, ch.getDOS(), odom);
+		right = new Right(pilot, ch.getDOS(), odom);
+		backright = new BackRight(pilot, ch.getDOS(), odom);
+		backleft = new BackLeft(pilot, ch.getDOS(), odom);
 	}
 	
 
@@ -78,9 +80,9 @@ public class Movement implements Behavior, ISub{
 			default:
 				break;
 			}
-			
+			    movement.giveResponse();
 				movement.move();
-				movement.giveResponse();
+				
 				while(!isSupressed && !newInput)
 					Thread.yield();
 				

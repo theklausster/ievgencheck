@@ -6,12 +6,15 @@
 
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -20,8 +23,8 @@ import javax.swing.JPanel;
  */
 public class MainPanel extends JPanel{
     private final int ELLIPSE_RADIUS = 3;
-    List pointList;
-    List obstaclesList;
+    ArrayList<Point> pointList;
+    ArrayList<Point> obstaclesList;
     Color pointColor;
     Color obstaclesColor;
     int width;
@@ -29,14 +32,17 @@ public class MainPanel extends JPanel{
     double scale;
 
     public MainPanel() {
-        pointList = new ArrayList();
-        obstaclesList = new ArrayList();
+        pointList = new ArrayList<>();
+        obstaclesList = new ArrayList<>();
         pointColor = Color.BLUE;
         obstaclesColor = Color.RED;
         setBackground(Color.white);
         width = getWidth();
         height = getHeight();
         scale = 1.0;
+             
+        setPreferredSize(new Dimension(1000, 600));
+		
     }
 
    
@@ -59,11 +65,12 @@ public class MainPanel extends JPanel{
             g2.setPaint(pointColor);
             g2.fill(ellipse);
             
-            if ( j != pointList.size() - 2 ){
-                nextPoint = (Point) pointList.get(j+1);
-                nextEllipse = new Ellipse2D.Double(nextPoint.x - ELLIPSE_RADIUS, nextPoint.y - ELLIPSE_RADIUS, 2*ELLIPSE_RADIUS, 2*ELLIPSE_RADIUS);
-                g2.drawLine(point.x,point.y,nextPoint.x,nextPoint.y);
-            }
+//            if ( j != pointList.size() - 2 ){
+//                nextPoint = (Point) pointList.get(j+1);
+//                nextEllipse = new Ellipse2D.Double(nextPoint.x - ELLIPSE_RADIUS, nextPoint.y - ELLIPSE_RADIUS, 2*ELLIPSE_RADIUS, 2*ELLIPSE_RADIUS);
+//                g2.drawLine(point.x,point.y,nextPoint.x,nextPoint.y);
+//            }
+            
         }
         
         for(int j = 0; j < obstaclesList.size(); j++)
@@ -78,9 +85,11 @@ public class MainPanel extends JPanel{
     
     public void addPoint(double x, double y)
     {
+
         Point p = convertToPoint(x,y);
         pointList.add(p);
         repaint();
+        
     }    
     
     public void addObstacles(double x, double y){

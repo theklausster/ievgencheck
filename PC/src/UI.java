@@ -14,6 +14,7 @@ public class UI extends JFrame implements KeyListener {
 	
 	 DataOutputStream dos;
 	 DataInputStream dis;
+	 MainPanel panel;
 	 
 	 
 	 public UI(){
@@ -38,13 +39,14 @@ public class UI extends JFrame implements KeyListener {
 		}
 
 		private  void setupUi() {
-			JPanel panel = new JPanel();
-			panel.setPreferredSize(new Dimension(640, 480));
+			panel = new MainPanel();
+			
+			
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			addKeyListener(this);
 			setContentPane(panel);
 			setLocation(150, 100);
-	        setResizable(false);
+//	        setResizable(false);
 	        pack();
 	        setVisible(true);
 		
@@ -69,11 +71,27 @@ public class UI extends JFrame implements KeyListener {
 			String input;
 			try{
 				input = dis.readUTF();
-				System.out.println(input);
+				double x = getX(input);
+				double y = getY(input);
+				panel.addPoint(x, y);
+				System.out.println(input + " from robot");
 			}
 			catch(Exception e){
 				
 			}
+		}
+		
+		
+		
+
+		private double getY(String input) {
+			String[] parts = input.split(" ");
+			return Double.parseDouble(parts[2]);
+		}
+
+		private double getX(String input) {
+			String[] parts = input.split(" ");
+			return Double.parseDouble(parts[1]);
 		}
 
 		@Override

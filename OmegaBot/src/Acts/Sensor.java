@@ -14,10 +14,11 @@ public class Sensor implements Behavior{
 	
 	private DifferentialPilot pilot;
 	private UltrasonicSensor sonic;
+	private OdometryPoseProvider odom;
 	private boolean isSupressed = false;
 	
-	public Sensor(DifferentialPilot pilot){
-		
+	public Sensor(DifferentialPilot pilot, OdometryPoseProvider odom){
+		this.odom = odom;
 		this.pilot = pilot;
 		this.sonic = new UltrasonicSensor(SensorPort.S4);
 	}

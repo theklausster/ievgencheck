@@ -15,6 +15,7 @@ import Connection.ConnectionHelper;
 import lejos.nxt.ColorSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
+import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
@@ -29,17 +30,19 @@ public class TheArbitrator {
 	DataInputStream dis;
 	DataOutputStream dos;
 	ConnectionHelper ch;
-	
+	OdometryPoseProvider odom;
 	
 	public TheArbitrator() {
 		ch = new ConnectionHelper();
 		Thread thread = new Thread(ch);
 		thread.start();
-		
+	
+	
 	pilot = new DifferentialPilot(DifferentialPilot.WHEEL_SIZE_NXT2, 12.5, Motor.B, Motor.C);
+	odom = new OdometryPoseProvider(pilot);
 	exit = new Exit();
-	sensor = new Sensor(pilot);
-	movement = new Movement(pilot, ch);
+	sensor = new Sensor(pilot, odom);
+	movement = new Movement(pilot, ch, odom);
 	Behavior[] behaviorList = {movement, sensor, exit};
 	//Thread thread = new Thread(new InputHelper(dis));
 	//thread.start();
