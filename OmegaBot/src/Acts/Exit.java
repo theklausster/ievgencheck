@@ -6,7 +6,7 @@ import lejos.robotics.subsumption.Behavior;
 
 public class Exit implements Behavior, ButtonListener{
 	
-	private boolean isPressed;
+	private boolean isPressed = false;
 	
 	public Exit() {
 		Button.ESCAPE.addButtonListener(this);

@@ -1,6 +1,5 @@
 package Main;
 
-import Connection.Connection;
 import Plan.TheArbitrator;
 
 public class main {
