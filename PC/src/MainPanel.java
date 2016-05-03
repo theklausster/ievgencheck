@@ -103,7 +103,9 @@ public class MainPanel extends JPanel{
         int normalX = -roundedY;
         int normalY = roundedX;
         //convert x,y to JPanel coordinate
-        Point p = new Point(normalX + width/2, height/2 - normalY);
+		int jFrameX = width / 2 + normalX;
+		int jFrameY = height / 2 - normalY;
+		Point p = new Point(jFrameX, jFrameY);
         return p;
     }
 }

@@ -37,7 +37,7 @@ public class TheArbitrator {
 	pilot = new DifferentialPilot(DifferentialPilot.WHEEL_SIZE_NXT2, 12.5, Motor.B, Motor.C);
 	odom = new OdometryPoseProvider(pilot);
 	exit = new Exit();
-	sensor = new Sensor(pilot, odom);
+		sensor = new Sensor(pilot, ch, odom);
 	movement = new Movement(pilot, ch, odom);
 		bumper = new Bumper(pilot, odom);
 		Behavior[] behaviorList = { movement, sensor, bumper, exit };

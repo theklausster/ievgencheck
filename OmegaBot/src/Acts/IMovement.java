@@ -1,9 +1,7 @@
 package Acts;
 
-import java.io.IOException;
-
-public interface IMovement {
+public interface IMovement extends IGiveResponse {
 	
 	void move();
-	void giveResponse() throws IOException; 
+
 }

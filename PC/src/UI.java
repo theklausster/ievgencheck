@@ -10,21 +10,29 @@ import javax.swing.JFrame;
 
 import lejos.pc.comm.NXTConnector;
 
-public class UI extends JFrame implements KeyListener {
+public class UI extends JFrame implements KeyListener, ISub {
 	
 	 DataOutputStream dos;
 	 DataInputStream dis;
 	 MainPanel panel;
 	Dimension screenSize;
+	DISListener disListener;
 	 
 	 public UI(){
 			setupConnection();
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			setupUi();
+		setupDisListener();
+	}
 
-	 }
-	 
-	 private void setupConnection() {
+	private void setupDisListener() {
+		disListener = new DISListener(dis);
+		disListener.addSub(this);
+		new Thread(disListener).start();
+
+	}
+
+	private void setupConnection() {
 			
 			NXTConnector conn = new NXTConnector();
 		    boolean connected = conn.connectTo("btspp://Omega");
@@ -41,13 +49,13 @@ public class UI extends JFrame implements KeyListener {
 		}
 
 		private  void setupUi() {
-		panel = new MainPanel((int) screenSize.getWidth(), (int) screenSize.getHeight());
+		panel = new MainPanel((int) screenSize.getWidth() - 100, (int) screenSize.getHeight() - 100);
 			
 			
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			addKeyListener(this);
 			setContentPane(panel);
-		setLocation(0, 0);
+		    setLocation(0, 0);
 		setResizable(true);
 	        pack();
 	        setVisible(true);
@@ -68,23 +76,6 @@ public class UI extends JFrame implements KeyListener {
 				
 			}
 		}
-		
-		public void getMsg(){
-			String input;
-			try{
-				input = dis.readUTF();
-				double x = getX(input);
-				double y = getY(input);
-				panel.addPoint(x, y);
-			panel.repaint();
-				System.out.println(input + " from robot");
-			}
-			catch(Exception e){
-				
-			}
-		}
-		
-		
 		
 
 		private double getY(String input) {
@@ -125,7 +116,7 @@ public class UI extends JFrame implements KeyListener {
 				break;
 				
 			}
-			getMsg();
+
 			
 			
 			
@@ -136,5 +127,26 @@ public class UI extends JFrame implements KeyListener {
 			// TODO Auto-generated method stub
 			
 		}
+
+	@Override
+	public void getInput(String input) {
+		double x = getX(input);
+		double y = getY(input);
+		String key = getKey(input);
+		if (key.equals("obstical")) {
+			panel.addObstacles(x, y);
+		} else {
+			panel.addPoint(x, y);
+
+		}
+		panel.repaint();
+		// System.out.println(input + " from robot");
+
+	}
+
+	private String getKey(String input) {
+		String[] parts = input.split(" ");
+		return parts[0];
+	}
 
 }
