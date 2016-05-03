@@ -3,18 +3,13 @@ package Plan;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
-import Acts.Backward;
+
+import Acts.Bumper;
 import Acts.Exit;
-import Acts.Forward;
-import Acts.InputHelper;
 import Acts.Movement;
 import Acts.Sensor;
-import Acts.Stop;
 import Connection.ConnectionHelper;
-import lejos.nxt.ColorSensor;
 import lejos.nxt.Motor;
-import lejos.nxt.SensorPort;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Arbitrator;
@@ -26,6 +21,7 @@ public class TheArbitrator {
 	private Arbitrator arbitrator;
 	private Movement movement;
 	private Sensor sensor;
+	private Bumper bumper;
 	private Exit exit;
 	DataInputStream dis;
 	DataOutputStream dos;
@@ -43,7 +39,8 @@ public class TheArbitrator {
 	exit = new Exit();
 	sensor = new Sensor(pilot, odom);
 	movement = new Movement(pilot, ch, odom);
-	Behavior[] behaviorList = {movement, sensor, exit};
+		bumper = new Bumper(pilot, odom);
+		Behavior[] behaviorList = { movement, sensor, bumper, exit };
 	//Thread thread = new Thread(new InputHelper(dis));
 	//thread.start();
 	arbitrator = new Arbitrator(behaviorList);

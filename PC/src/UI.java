@@ -1,12 +1,12 @@
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import lejos.pc.comm.NXTConnector;
 
@@ -15,11 +15,13 @@ public class UI extends JFrame implements KeyListener {
 	 DataOutputStream dos;
 	 DataInputStream dis;
 	 MainPanel panel;
-	 
+	Dimension screenSize;
 	 
 	 public UI(){
 			setupConnection();
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			setupUi();
+
 	 }
 	 
 	 private void setupConnection() {
@@ -39,14 +41,14 @@ public class UI extends JFrame implements KeyListener {
 		}
 
 		private  void setupUi() {
-			panel = new MainPanel();
+		panel = new MainPanel((int) screenSize.getWidth(), (int) screenSize.getHeight());
 			
 			
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			addKeyListener(this);
 			setContentPane(panel);
-			setLocation(150, 100);
-//	        setResizable(false);
+		setLocation(0, 0);
+		setResizable(true);
 	        pack();
 	        setVisible(true);
 		
@@ -74,6 +76,7 @@ public class UI extends JFrame implements KeyListener {
 				double x = getX(input);
 				double y = getY(input);
 				panel.addPoint(x, y);
+			panel.repaint();
 				System.out.println(input + " from robot");
 			}
 			catch(Exception e){

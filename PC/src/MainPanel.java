@@ -12,9 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
-import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -31,7 +29,7 @@ public class MainPanel extends JPanel{
     int height;
     double scale;
 
-    public MainPanel() {
+	public MainPanel(int x, int y) {
         pointList = new ArrayList<>();
         obstaclesList = new ArrayList<>();
         pointColor = Color.BLUE;
@@ -40,8 +38,9 @@ public class MainPanel extends JPanel{
         width = getWidth();
         height = getHeight();
         scale = 1.0;
-             
-        setPreferredSize(new Dimension(1000, 600));
+		height = y;
+		width = x;
+		setPreferredSize(new Dimension(x, y));
 		
     }
 
@@ -65,11 +64,10 @@ public class MainPanel extends JPanel{
             g2.setPaint(pointColor);
             g2.fill(ellipse);
             
-//            if ( j != pointList.size() - 2 ){
-//                nextPoint = (Point) pointList.get(j+1);
-//                nextEllipse = new Ellipse2D.Double(nextPoint.x - ELLIPSE_RADIUS, nextPoint.y - ELLIPSE_RADIUS, 2*ELLIPSE_RADIUS, 2*ELLIPSE_RADIUS);
-//                g2.drawLine(point.x,point.y,nextPoint.x,nextPoint.y);
-//            }
+			if (j != 0) {
+				nextPoint = (Point) pointList.get(j - 1);
+				g2.drawLine(point.x, point.y, nextPoint.x, nextPoint.y);
+			}
             
         }
         
@@ -88,7 +86,7 @@ public class MainPanel extends JPanel{
 
         Point p = convertToPoint(x,y);
         pointList.add(p);
-        repaint();
+		// repaint();
         
     }    
     

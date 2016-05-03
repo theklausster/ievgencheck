@@ -1,12 +1,7 @@
 package Acts;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 import Connection.ConnectionHelper;
 import Connection.ISub;
-import lejos.nxt.LCD;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
@@ -80,9 +75,10 @@ public class Movement implements Behavior, ISub{
 			default:
 				break;
 			}
+
+			movement.move();
 			    movement.giveResponse();
-				movement.move();
-				
+
 				while(!isSupressed && !newInput)
 					Thread.yield();
 				
