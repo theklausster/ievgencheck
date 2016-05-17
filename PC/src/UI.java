@@ -8,11 +8,15 @@ import java.io.DataOutputStream;
 
 import javax.swing.JFrame;
 
+import Connection.IConnector;
 import lejos.pc.comm.NXTConnector;
 
 public class UI extends JFrame implements KeyListener, ISub {
 	
-	 DataOutputStream dos;
+	Writer writer;
+	Reader reader;
+	
+	DataOutputStream dos;
 	 DataInputStream dis;
 	 MainPanel panel;
 	Dimension screenSize;
@@ -24,7 +28,20 @@ public class UI extends JFrame implements KeyListener, ISub {
 			setupUi();
 		setupDisListener();
 	}
+	 public UI(IConnector connector){
+			//setupConnection();
+		 writer = new Writer(connector);
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			setupUi();
+		setupReaderListener(connector);
+	}
 
+	 private void setupReaderListener(IConnector connector){
+		 reader = new Reader(connector);
+		 reader.addSub(this);
+		 new Thread(reader).start();
+	 }
+	 
 	private void setupDisListener() {
 		disListener = new DISListener(dis);
 		disListener.addSub(this);
@@ -50,22 +67,19 @@ public class UI extends JFrame implements KeyListener, ISub {
 
 		private  void setupUi() {
 		panel = new MainPanel((int) screenSize.getWidth() - 100, (int) screenSize.getHeight() - 100);
-			
-			
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			addKeyListener(this);
 			setContentPane(panel);
 		    setLocation(0, 0);
-		setResizable(true);
+		    setResizable(true);
 	        pack();
 	        setVisible(true);
-		
-			
-		
 		}
 
 		
 		public void sendMsg(String input){
+			writer.sendMessage(input);
+			/*
 			try{
 				System.out.println(input + " on PC");
 				dos.writeUTF(input);
@@ -74,7 +88,7 @@ public class UI extends JFrame implements KeyListener, ISub {
 			}
 			catch(Exception e){
 				
-			}
+			}*/
 		}
 		
 
