@@ -44,7 +44,6 @@ public class ConnectionHelper implements Runnable, INotifier{
 			dos.writeUTF(input);
 			dos.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -54,16 +53,11 @@ public class ConnectionHelper implements Runnable, INotifier{
 	public void run() {
 		while (true){
 			try {
-			
-					notifySub(dis.readUTF());
-					
-				
+				notifySub(dis.readUTF());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
 	}
 
 	@Override

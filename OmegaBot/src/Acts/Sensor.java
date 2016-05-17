@@ -62,7 +62,6 @@ public class Sensor implements Behavior, IGiveResponse {
 			dos.writeUTF("obstical " + getObsticalX(pose) + " " + getObsticaY(pose));
 			dos.flush();
 
-
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
