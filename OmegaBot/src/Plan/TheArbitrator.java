@@ -41,8 +41,7 @@ public class TheArbitrator {
 	movement = new Movement(pilot, ch, odom);
 		bumper = new Bumper(pilot, odom);
 		Behavior[] behaviorList = { movement, sensor, bumper, exit };
-	//Thread thread = new Thread(new InputHelper(dis));
-	//thread.start();
+
 	arbitrator = new Arbitrator(behaviorList);
 	arbitrator.start();
 	
