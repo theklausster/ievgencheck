@@ -1,33 +1,23 @@
 package Acts;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-
+import Connection.ConnectionHelper;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 
-public class Left implements IMovement {
+public class Left extends AbstractMovement {
 
-	DifferentialPilot pilot;
-	DataOutputStream dos;
-	OdometryPoseProvider odom;
-	public Left(DifferentialPilot pilot, DataOutputStream dos, OdometryPoseProvider odom) {
-		this.odom = odom;
-		this.pilot = pilot;
-		this.dos = dos;
+	public Left(ConnectionHelper connectionHelper, DifferentialPilot pilot, OdometryPoseProvider odom) {
+		super(connectionHelper, pilot, odom);
 	}
-	
+
 	@Override
 	public void move() {
 		pilot.steer(40);  
-	
 	}
 
-	
 	@Override
-	public void giveResponse() throws IOException {
-		dos.writeUTF("left "+ odom.getPose().getX() + " " + odom.getPose().getY());
-		dos.flush();
+	protected String getCodeWorld() {
+		return "left";
 	}
 	
 	

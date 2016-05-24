@@ -31,7 +31,6 @@ public class ConnectionHelper implements Runnable, INotifier{
 	    dis = new DataInputStream(btc.openDataInputStream());
 		dos = new DataOutputStream(btc.openDataOutputStream());
 	    LCD.drawString("Client connected", 0, 0);
-	
 }
 	
 	public String getLastInput(){

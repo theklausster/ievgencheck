@@ -38,7 +38,7 @@ public class Sensor implements Behavior, IGiveResponse {
 	public void action() {
 		giveResponse();
 			Sound.beep();
-		pilot.rotate(180);
+		pilot.travel(-10);
 			while(!isSupressed && pilot.isMoving())
 				Thread.yield();
 			if(sonic.getDistance() > 30){

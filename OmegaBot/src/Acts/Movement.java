@@ -8,7 +8,6 @@ import lejos.robotics.subsumption.Behavior;
 
 public class Movement implements Behavior, ISub{
 
-
 	private DifferentialPilot pilot;
 	IMovement movement;
 	IMovement forward;
@@ -27,13 +26,13 @@ public class Movement implements Behavior, ISub{
 	 public Movement(DifferentialPilot pilot, ConnectionHelper ch, OdometryPoseProvider odom) {
 		this.pilot = pilot;
 		ch.addSub(this);
-		forward = new Forward(pilot, ch.getDOS(), odom);
-		back = new Backward(pilot, ch.getDOS(), odom);
-		stop = new Stop(pilot, ch.getDOS(), odom);
-		left = new Left(pilot, ch.getDOS(), odom);
-		right = new Right(pilot, ch.getDOS(), odom);
-		backright = new BackRight(pilot, ch.getDOS(), odom);
-		backleft = new BackLeft(pilot, ch.getDOS(), odom);
+		forward = new Forward(ch, pilot, odom);
+		back = new Backward(ch, pilot, odom);
+		stop = new Stop(ch, pilot, odom);
+		left = new Left(ch, pilot, odom);
+		right = new Right(ch, pilot, odom);
+		backright = new BackRight(ch, pilot, odom);
+		backleft = new BackLeft(ch, pilot, odom);
 	}
 	
 
@@ -89,6 +88,7 @@ public class Movement implements Behavior, ISub{
 
 	@Override
 	public void suppress() {
+		input = "stop";
 		isSupressed = true;
 		
 	}
@@ -102,8 +102,6 @@ public class Movement implements Behavior, ISub{
 	
 		newInput = true;
 		this.input = input;
-		
-		System.out.println(this.input + " in sub");
 		
 	}
 	

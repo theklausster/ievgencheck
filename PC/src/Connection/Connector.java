@@ -1,9 +1,9 @@
 package Connection;
 
-import NXTConnector;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+
+import lejos.pc.comm.NXTConnector;
 
 public class Connector implements IConnector{
 

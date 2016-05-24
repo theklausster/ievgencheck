@@ -9,7 +9,6 @@ import java.io.DataOutputStream;
 import javax.swing.JFrame;
 
 import Connection.IConnector;
-import lejos.pc.comm.NXTConnector;
 
 public class UI extends JFrame implements KeyListener, ISub {
 	
@@ -17,22 +16,15 @@ public class UI extends JFrame implements KeyListener, ISub {
 	Reader reader;
 	
 	DataOutputStream dos;
-	 DataInputStream dis;
-	 MainPanel panel;
+	DataInputStream dis;
+	MainPanel panel;
 	Dimension screenSize;
-	DISListener disListener;
 	 
-	 public UI(){
-			setupConnection();
-		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			setupUi();
-		setupDisListener();
-	}
 	 public UI(IConnector connector){
-			//setupConnection();
-		 writer = new Writer(connector);
+		writer = Writer.getInstance();
+		writer.setupIConnector(connector);
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			setupUi();
+		setupUi();
 		setupReaderListener(connector);
 	}
 
@@ -42,28 +34,6 @@ public class UI extends JFrame implements KeyListener, ISub {
 		 new Thread(reader).start();
 	 }
 	 
-	private void setupDisListener() {
-		disListener = new DISListener(dis);
-		disListener.addSub(this);
-		new Thread(disListener).start();
-
-	}
-
-	private void setupConnection() {
-			
-			NXTConnector conn = new NXTConnector();
-		    boolean connected = conn.connectTo("btspp://Omega");
-		    
-		    if (! connected)
-		    {
-			System.out.println("ERROR - Unable to connect to NXT");
-			System.exit(2);
-		    }
-		    
-		    dis = new DataInputStream(conn.getInputStream());
-		    dos = new DataOutputStream(conn.getOutputStream());
-			
-		}
 
 		private  void setupUi() {
 		panel = new MainPanel((int) screenSize.getWidth() - 100, (int) screenSize.getHeight() - 100);
@@ -79,16 +49,6 @@ public class UI extends JFrame implements KeyListener, ISub {
 		
 		public void sendMsg(String input){
 			writer.sendMessage(input);
-			/*
-			try{
-				System.out.println(input + " on PC");
-				dos.writeUTF(input);
-				dos.flush();
-		
-			}
-			catch(Exception e){
-				
-			}*/
 		}
 		
 
@@ -130,16 +90,11 @@ public class UI extends JFrame implements KeyListener, ISub {
 				break;
 				
 			}
-
-			
-			
-			
 		}
 
 		@Override
 		public void keyTyped(KeyEvent arg0) {
 			// TODO Auto-generated method stub
-			
 		}
 
 	@Override
@@ -151,7 +106,6 @@ public class UI extends JFrame implements KeyListener, ISub {
 			panel.addObstacles(x, y);
 		} else {
 			panel.addPoint(x, y);
-
 		}
 		panel.repaint();
 		// System.out.println(input + " from robot");

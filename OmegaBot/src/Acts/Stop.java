@@ -1,34 +1,23 @@
 package Acts;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-
+import Connection.ConnectionHelper;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
-import lejos.robotics.subsumption.Behavior;
 
-public class Stop implements IMovement{
+public class Stop extends AbstractMovement {
 
-	DifferentialPilot pilot;
-	DataOutputStream dos;
-	OdometryPoseProvider odom;
-	public Stop(DifferentialPilot pilot, DataOutputStream dos, OdometryPoseProvider odom) {
-		this.odom = odom;
-		this.pilot = pilot;
-		this.dos = dos;
+	public Stop(ConnectionHelper connectionHelper, DifferentialPilot pilot, OdometryPoseProvider odom) {
+		super(connectionHelper, pilot, odom);
 	}
-	
+
 	@Override
 	public void move() {
 	    pilot.stop();
-	
 	}
 
-	
 	@Override
-	public void giveResponse() throws IOException {
-		dos.writeUTF("stop "+ odom.getPose().getX() + " " + odom.getPose().getY());
-		dos.flush();
+	protected String getCodeWorld() {
+		return "stop";
 	}
 	
 	

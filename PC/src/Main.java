@@ -14,8 +14,7 @@ public class Main  {
 			
 			@Override
 			public void run() {
-				UI a = new UI();
-				
+				UI v = new UI(connector);
 			}
 		});
 		

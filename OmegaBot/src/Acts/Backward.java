@@ -1,35 +1,24 @@
 package Acts;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
+import Connection.ConnectionHelper;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
-import lejos.robotics.subsumption.Behavior;
 
-public class Backward implements IMovement{
+public class Backward extends AbstractMovement {
 	
-	
-	DifferentialPilot pilot;
-	DataOutputStream dos;
-	OdometryPoseProvider odom;
-	public Backward(DifferentialPilot pilot, DataOutputStream dos, OdometryPoseProvider odom) {
-		this.odom = odom;
-		this.pilot = pilot;
-		this.dos = dos;
+
+	public Backward(ConnectionHelper connectionHelper, DifferentialPilot pilot, OdometryPoseProvider odom) {
+		super(connectionHelper, pilot, odom);
 	}
 
 	@Override
 	public void move() {
 		pilot.backward();
-	
 	}
 
 	@Override
-	public void giveResponse() throws IOException {
-		dos.writeUTF("backward "+ odom.getPose().getX() + " " + odom.getPose().getY());
-		dos.flush();
+	protected String getCodeWorld() {
+		return "backward";
 	}
 	
 }

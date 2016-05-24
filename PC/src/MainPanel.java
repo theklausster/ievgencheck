@@ -41,6 +41,7 @@ public class MainPanel extends JPanel{
 		height = y;
 		width = x;
 		setPreferredSize(new Dimension(x, y));
+		addMouseListener(new PointLocater(this));
 		
     }
 
@@ -79,17 +80,27 @@ public class MainPanel extends JPanel{
             g2.fill(ellipse);
          
         }
+
     }
     
     public void addPoint(double x, double y)
     {
-
         Point p = convertToPoint(x,y);
         pointList.add(p);
-		// repaint();
+		repaint();
         
     }    
     
+	public void addDestinationPoint(double x, double y) {
+		int roundedX = (int) Math.round(x);
+		int roundedY = (int) Math.round(y);
+		Point p = new Point(roundedX, roundedY);
+
+		pointList.add(p);
+		repaint();
+
+	}
+
     public void addObstacles(double x, double y){
         Point p = convertToPoint(x,y);
         obstaclesList.add(p);
@@ -108,4 +119,17 @@ public class MainPanel extends JPanel{
 		Point p = new Point(jFrameX, jFrameY);
         return p;
     }
+
+	public String convertToRobotCoordinates(Point p) {
+		double x = p.getX();
+		double y = p.getY();
+
+		double normalX = x - width / 2;
+		double normalY = height / 2 - y;
+
+		int robotX = (int) normalY;
+		int robotY = (int) -normalX;
+
+		return "drive " + robotX + " " + robotY;
+	}
 }

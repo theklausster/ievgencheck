@@ -27,6 +27,7 @@ public class TheArbitrator {
 	DataOutputStream dos;
 	ConnectionHelper ch;
 	OdometryPoseProvider odom;
+
 	
 	public TheArbitrator() {
 		ch = new ConnectionHelper();
